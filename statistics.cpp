@@ -42,5 +42,6 @@ Statistics::Statistics(QString name, int missed_R, int missed_L, int good_R, int
     }
 
     window.setCentralWidget(_chartView);
+    window.setWindowTitle("Statistics");
     window.resize(900, 600);
 }

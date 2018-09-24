@@ -4,7 +4,7 @@
 KeyExerciseWindow::KeyExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l_b, bool r_b, double distance, bool r_e, bool l_e,
                                      int prev_font_size_R, int prev_font_size_L,
                                      int prev_peripheral_size_R, int prev_peripheral_size_L,
-                                     bool smaller_R, bool smaller_L) :
+                                     bool smaller_R, bool smaller_L, int ctr) :
     QDialog(parent),
     ui(new Ui::KeyExerciseWindow)
 {
@@ -19,8 +19,24 @@ KeyExerciseWindow::KeyExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l
     setFontSizeL(smaller_L, prev_font_size_L);
     setPeripheralFontSizeR(smaller_R, prev_peripheral_size_R);
     setPeripheralFontSizeL(smaller_R, prev_peripheral_size_L);
+    _letters_1 << "F" << "J";
+    _letters_2 << "D" << "F" << "J" << "K";
+    _letters_3 << "S" << "D" << "F" << "J" << "K" << "L";
+    _letters << "F" << "J";
+    if(smaller_R || smaller_L){
+        if(ctr>5){
+            _letters = _letters_1;
+        }
+        else if(ctr>10){
+            _letters = _letters_2;
+        }
+        else if(ctr>20){
+            _letters = _letters_3;
+        }
+    }
 
-    _letters<<"S"<<"D"<<"F"<<"J"<< "K"<< "L";
+
+
     _timer = new QTimer();
     _timer->setInterval(3000);
     _dot_button = new QPushButton(this);
@@ -142,7 +158,7 @@ void KeyExerciseWindow::randomAnimation()
 void KeyExerciseWindow::setFontSizeR(bool _smaller, int _prev_size)
 {
     if(_smaller && (_font_size>=15)){
-        _font_size_R = _prev_size-10;
+        _font_size_R = _prev_size-3;
     }
     else{
         _font_size_R = _prev_size;
@@ -162,7 +178,7 @@ void KeyExerciseWindow::setPeripheralFontSizeR(bool _smaller, int _prev_size)
 void KeyExerciseWindow::setFontSizeL(bool _smaller, int _prev_size)
 {
     if(_smaller && (_font_size>=15)){
-        _font_size_L = _prev_size-10;
+        _font_size_L = _prev_size-3;
     }
     else{
         _font_size_L = _prev_size;
@@ -200,12 +216,12 @@ void KeyExerciseWindow::clickedCounter()
 {
     ++_clicks_ctr;
     if(_clicks_ctr%15==0 && _font_size>=15){
-        _font_size -=10;
+        _font_size -=3;
         QFont font("Arial", _font_size);
         _key_button->setFont(font);
-        _key_button->resize(_font_size+10, _font_size+10);
+        _key_button->resize(_font_size+15, _font_size+15);
     }
-    else if (_font_size<=5){
+    else if (_font_size<=10){
         messageBox();
     }
 }
@@ -215,7 +231,7 @@ void KeyExerciseWindow::dotCounter()
     ++_dot_ctr;
     if(_dot_ctr%10==0){
         if(_font_size<=80){
-            _font_size+=10;
+            _font_size+=5;
             QFont _font("Arial", _font_size);
             _key_button->setFont(_font);
             _key_button->resize(_font_size+15, _font_size+15);

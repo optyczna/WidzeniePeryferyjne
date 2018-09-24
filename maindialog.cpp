@@ -11,7 +11,7 @@ MainDialog::MainDialog(QWidget *parent) :
     _data = new DataHandling();
     _personal_data = new PersonalData();
     QScreen *screen = qApp->screens().at(0);
-    qDebug() << screen->geometry() << screen->physicalSize() << screen->physicalDotsPerInch();
+   // qDebug() << screen->geometry() << screen->physicalSize() << screen->physicalDotsPerInch();
     _calculator = new DistanceCalculator;
     _main_layout = new QVBoxLayout;
     _ex_group_box = new QGroupBox;
@@ -307,9 +307,20 @@ void MainDialog::statistics()
     else{
         _personal_data->setName(_name_line_edit->text());
         _personal_data->readData();
-        _stats = new Statistics(_name_line_edit->text(), _personal_data->getMissedR(), _personal_data->getMissedL(),
-                                _personal_data->getGoodR(), _personal_data->getGoodL(), _personal_data->getExCtr());
-        _stats->window.show();
+        if(_personal_data->getExCtr()!=0){
+            _stats = new Statistics(_name_line_edit->text(), _personal_data->getMissedR(), _personal_data->getMissedL(),
+                                    _personal_data->getGoodR(), _personal_data->getGoodL(), _personal_data->getExCtr());
+            _stats->window.show();
+        }
+        else{
+            QMessageBox messageBox;
+            messageBox.setText("Statistics cannot be displayed, you have not pactice yet.");
+            messageBox.setStandardButtons(QMessageBox::Ok);
+            if(messageBox.exec()==QMessageBox::Ok){
+                messageBox.close();
+            }
+        }
+
     }
 }
 
@@ -326,9 +337,9 @@ void MainDialog::excercise(double _screen_distance, double _angle, double _centr
                      _screen_distance,
                      _right_eye_check_box->checkState(),
                      _left_eye_check_box->checkState(),
-                    _prev_font_size_R, _prev_font_size_L,
-                    _prev_peripheral_font_size_R, _prev_peripheral_font_size_L,
-                    _smaller_R, _smaller_L);
+                     _prev_font_size_R, _prev_font_size_L,
+                     _prev_peripheral_font_size_R, _prev_peripheral_font_size_L,
+                     _smaller_R, _smaller_L, _personal_data->getExCtr());
 
         connect(_key_window, &KeyExerciseWindow::clicks_r, this, &MainDialog::clicksR);
         connect(_key_window, &KeyExerciseWindow::clicks_l, this, &MainDialog::clicksL);
@@ -377,11 +388,11 @@ void MainDialog::excercise(double _screen_distance, double _angle, double _centr
                     _screen_distance,
                     _right_eye_check_box->checkState(),
                     _left_eye_check_box->checkState(),
-                   _prev_font_size_R, _prev_font_size_L,
-                   _prev_peripheral_font_size_R, _prev_peripheral_font_size_L,
-                   _smaller_R, _smaller_L);
+                    _prev_font_size_R, _prev_font_size_L,
+                    _prev_peripheral_font_size_R, _prev_peripheral_font_size_L,
+                    _smaller_R, _smaller_L);
 
-       qDebug() << "Window constructor R: " << _prev_font_size_R << "L: " << _prev_font_size_L;
+      // qDebug() << "Window constructor R: " << _prev_font_size_R << "L: " << _prev_font_size_L;
 
        connect(_window, &ExerciseWindow::clicks_r, this, &MainDialog::clicksR);
        connect(_window, &ExerciseWindow::clicks_l, this, &MainDialog::clicksL);

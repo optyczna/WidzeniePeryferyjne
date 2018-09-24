@@ -145,7 +145,7 @@ void ExerciseWindow::randomAnimation()
 void ExerciseWindow::setFontSizeR(bool _smaller, int _prev_size)
 {
     if(_smaller && (_font_size>=15)){
-        _font_size_R = _prev_size-10;
+        _font_size_R = _prev_size-3;
     }
     else{
         _font_size_R = _prev_size;
@@ -167,7 +167,7 @@ void ExerciseWindow::setFontSizeL(bool _smaller, int _prev_size)
 {
 
     if(_smaller && (_font_size>=15)){
-        _font_size_L = _prev_size-10;
+        _font_size_L = _prev_size-3;
     }
     else{
         _font_size_L = _prev_size;
@@ -200,12 +200,12 @@ void ExerciseWindow::clickCounterButton()
 {
     ++_button_ctr;
     if(_button_ctr%15==0 && _font_size>=15){
-        _font_size -=10;
+        _font_size -=3;
         QFont font("Arial", _font_size);
         _button->setFont(font);
-        _button->resize(_font_size+10, _font_size+10);
+        _button->resize(_font_size+15, _font_size+15);
     }
-    else if (_font_size<=5){
+    else if (_font_size<=10){
         infoToMessageBox();
     }
 }

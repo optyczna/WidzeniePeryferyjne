@@ -22,7 +22,7 @@ public:
     explicit KeyExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l_b, bool r_b, double distance, bool r_e, bool l_e,
                                int prev_font_size_R, int prev_font_size_L,
                                int prev_peripheral_size_R, int prev_peripheral_size_L,
-                               bool smaller_R, bool smaller_L);
+                               bool smaller_R, bool smaller_L, int ctr);
     ~KeyExerciseWindow();
 
 public slots:
@@ -44,6 +44,9 @@ private:
     QPushButton *_dot_button;
     QPropertyAnimation *_animation;
     QStringList _letters;
+    QStringList _letters_1;
+    QStringList _letters_2;
+    QStringList _letters_3;
     QTimer *_timer;
     QMessageBox *_message_box;
     int _font_size;
