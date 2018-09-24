@@ -1,6 +1,7 @@
 #include "keyexercisewindow.h"
 #include "ui_keyexercisewindow.h"
 
+#include <QDebug>
 KeyExerciseWindow::KeyExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l_b, bool r_b, double distance, bool r_e, bool l_e,
                                      int prev_font_size_R, int prev_font_size_L,
                                      int prev_peripheral_size_R, int prev_peripheral_size_L,
@@ -23,19 +24,18 @@ KeyExerciseWindow::KeyExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l
     _letters_2 << "D" << "F" << "J" << "K";
     _letters_3 << "S" << "D" << "F" << "J" << "K" << "L";
     _letters << "F" << "J";
-    if(smaller_R || smaller_L){
-        if(ctr>5){
+    qDebug() <<  smaller_L << smaller_R;
+    if(smaller_R == true || smaller_L == true){
+        if(ctr<=5){
             _letters = _letters_1;
         }
-        else if(ctr>10){
+        else if(ctr>5 && ctr <= 15){
             _letters = _letters_2;
         }
-        else if(ctr>20){
+        else if(ctr>15){
             _letters = _letters_3;
         }
     }
-
-
 
     _timer = new QTimer();
     _timer->setInterval(3000);

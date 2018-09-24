@@ -17,6 +17,7 @@
 #include <QCheckBox>
 #include <QMessageBox>
 #include <QLineEdit>
+#include <QComboBox>
 
 namespace Ui {
 class MainDialog;
@@ -33,6 +34,7 @@ public:
 private:
     Ui::MainDialog *ui;
     QVBoxLayout *_main_layout;
+    QComboBox *_name_combo_box;
     QHBoxLayout *_name_box;
     QLabel *_name_label;
     QLineEdit *_name_line_edit;
@@ -87,7 +89,7 @@ private:
     void exercises();
     void eye();
     void methods();
-
+    void name();
     double _visual_field;
 
 private slots:

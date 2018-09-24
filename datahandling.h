@@ -26,6 +26,7 @@ public:
     void read();
     void write();
     QString name() const;
+    QStringList names() const;
     void setName(const QString &name);
     bool checkIfExists(QString name);
 

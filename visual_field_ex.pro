@@ -46,7 +46,9 @@ FORMS += \
         maindialog.ui \
     exercisewindow.ui \
     distancecalculator.ui \
-    keyexercisewindow.ui
+    keyexercisewindow.ui \
+    statistics.ui \
+    statistics.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

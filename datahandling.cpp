@@ -7,6 +7,11 @@ QString DataHandling::name() const
     return _name;
 }
 
+QStringList DataHandling::names() const
+{
+    return _patients;
+}
+
 void DataHandling::setName(const QString &name)
 {
     _name = name;

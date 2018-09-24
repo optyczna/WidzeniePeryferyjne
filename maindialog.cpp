@@ -10,7 +10,7 @@ MainDialog::MainDialog(QWidget *parent) :
     ui->setupUi(this);
     _data = new DataHandling();
     _personal_data = new PersonalData();
-    QScreen *screen = qApp->screens().at(0);
+    //QScreen *screen = qApp->screens().at(0);
    // qDebug() << screen->geometry() << screen->physicalSize() << screen->physicalDotsPerInch();
     _calculator = new DistanceCalculator;
     _main_layout = new QVBoxLayout;
@@ -18,13 +18,7 @@ MainDialog::MainDialog(QWidget *parent) :
     _quadrant_group_box = new QGroupBox;
     _eye_group_box = new QGroupBox;
     _method_group_box = new QGroupBox;
-    _name_label = new QLabel("Name: ");
-    _name_line_edit = new QLineEdit;
-    _statistics_button = new QPushButton("Statistics");
-    _name_box = new QHBoxLayout;
-    _name_box->addWidget(_name_label);
-    _name_box->addWidget(_name_line_edit);
-    _name_box->addWidget(_statistics_button);
+    name();
     exercises();
     quadrant();
     eye();
@@ -73,9 +67,6 @@ MainDialog::MainDialog(QWidget *parent) :
 
     setLayout(_main_layout);
     setWindowTitle("Visual Field Expander");
-
-    _data->write();
-    _data->read();
 }
 
 MainDialog::~MainDialog()
@@ -147,13 +138,31 @@ void MainDialog::methods()
     _method_group_box->setLayout(_method_grid_layout);
 }
 
+void MainDialog::name()
+{
+    _data->write();
+    _data->read();
+    _name_label = new QLabel("Name: ");
+    _name_combo_box = new QComboBox;
+    _name_combo_box->addItems(_data->names());
+    _name_combo_box->setEditable(true);
+    _name_combo_box->setCurrentText("");
+//    _name_line_edit = new QLineEdit;
+    _statistics_button = new QPushButton("Statistics");
+    _name_box = new QHBoxLayout;
+    _name_box->addWidget(_name_label);
+//    _name_box->addWidget(_name_line_edit);
+    _name_box->addWidget(_name_combo_box);
+    _name_box->addWidget(_statistics_button);
+}
+
 void MainDialog::checkInitialValues()
 {
     if((_keybord_check_box->checkState()==0&&
             _touch_pad_box->checkState()==0&&
             _touch_screen_box->checkState()==0&&
             _mouse_check_box->checkState()==0) ||
-            (_name_line_edit->text() == "")){
+            (_name_combo_box->currentText() == "")){
 
         QMessageBox _message_box;
         QString text;
@@ -166,7 +175,7 @@ void MainDialog::checkInitialValues()
            text.append("\n-You need to check what would you like to use during exercise");
         }
 
-        if(_name_line_edit->text() == ""){
+        if(_name_combo_box->currentText() == ""){
             text.append("\n-You need to write your name");
         }
         _message_box.setText(text);
@@ -187,10 +196,10 @@ void MainDialog::checkInitialValues()
             _left_eye_check_box->setCheckState(Qt::Checked);
             _right_eye_check_box->setCheckState(Qt::Checked);
         }
-        if(!_data->checkIfExists(_name_line_edit->text())){
-            _data->setName(_name_line_edit->text());
+        if(!_data->checkIfExists(_name_combo_box->currentText())){
+            _data->setName(_name_combo_box->currentText());
             _data->write();
-            _personal_data->setName(_name_line_edit->text());
+            _personal_data->setName(_name_combo_box->currentText());
             _personal_data->readData();
             _prev_font_size_R = 40;
             _prev_font_size_L = 40;
@@ -199,8 +208,8 @@ void MainDialog::checkInitialValues()
             _smaller_R = false;
             _smaller_L = false;
         }
-        if(_data->checkIfExists(_name_line_edit->text())){
-            _personal_data->setName(_name_line_edit->text());
+        if(_data->checkIfExists(_name_combo_box->currentText())){
+            _personal_data->setName(_name_combo_box->currentText());
             _personal_data->readData();
             int good_r = _personal_data->getGoodR();
             int bad_r = _personal_data->getMissedR();
@@ -296,7 +305,7 @@ void MainDialog::calculate()
 
 void MainDialog::statistics()
 {
-    if(_name_line_edit->text() == ""){
+    if(_name_combo_box->currentText() == ""){
         QMessageBox messageBox;
         messageBox.setText("You need to enter your name");
         messageBox.setStandardButtons(QMessageBox::Ok);
@@ -305,12 +314,12 @@ void MainDialog::statistics()
         }
     }
     else{
-        _personal_data->setName(_name_line_edit->text());
+        _personal_data->setName(_name_combo_box->currentText());
         _personal_data->readData();
         if(_personal_data->getExCtr()!=0){
-            _stats = new Statistics(_name_line_edit->text(), _personal_data->getMissedR(), _personal_data->getMissedL(),
+            _stats = new Statistics(nullptr, _name_combo_box->currentText(), _personal_data->getMissedR(), _personal_data->getMissedL(),
                                     _personal_data->getGoodR(), _personal_data->getGoodL(), _personal_data->getExCtr());
-            _stats->window.show();
+            _stats->show();
         }
         else{
             QMessageBox messageBox;
@@ -434,4 +443,7 @@ void MainDialog::excercise(double _screen_distance, double _angle, double _centr
            //this->close();
        }
     }
+    _dialog_button_box->button( QDialogButtonBox::Ok )->setEnabled( false );
+    _dialog_button_box->button(QDialogButtonBox::Cancel)->setEnabled(false);
+    _dialog_button_box->addButton(QDialogButtonBox::Close);
 }
