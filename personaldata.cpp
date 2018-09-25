@@ -34,9 +34,9 @@ void PersonalData::readData()
         _visual_field_R_L = jsonObj["visual_field_R_L"].toInt();
         _visual_field_R = jsonObj["visual_field_R"].toInt();
         _visual_filed_L = jsonObj["visual_field_L"].toInt();
-//        _prev_peripheral_font_size_R = jsonObj["prev_peri_font_R"].toInt();
-//        _prev_peripheral_font_size_L = jsonObj["prev_peri_font_L"].toInt();
-        qDebug() << "Prev R " << _prev_font_size_R << "Prev L " << _prev_font_size_L;
+        _prev_peripheral_font_size_R = jsonObj["prev_peri_font_R"].toInt();
+        _prev_peripheral_font_size_L = jsonObj["prev_peri_font_L"].toInt();
+        qDebug() << "Prev R " << _prev_peripheral_font_size_R << "Prev L " << _prev_peripheral_font_size_L;
     }
     else{
         QFile file;
@@ -56,8 +56,8 @@ void PersonalData::readData()
         _visual_field_R = 0;
         _visual_field_R_L = 0;
         _visual_filed_L = 0;
-//        _prev_peripheral_font_size_R = 40;
-//        _prev_peripheral_font_size_L = 40;
+        _prev_peripheral_font_size_R = 40;
+        _prev_peripheral_font_size_L = 40;
     }
 }
 

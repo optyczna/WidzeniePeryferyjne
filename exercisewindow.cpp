@@ -14,7 +14,7 @@ ExerciseWindow::ExerciseWindow(QWidget *parent) :
 }
 
 ExerciseWindow::ExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l_b, bool r_b,
-                               double distance, bool r_e, bool l_e,
+                               double central_vision_field_px, bool r_e, bool l_e,
                                int prev_font_size_R, int prev_font_size_L,
                                int prev_peripheral_size_R, int prev_peripheral_size_L,
                                bool smaller_R, bool smaller_L) :
@@ -31,6 +31,7 @@ ExerciseWindow::ExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l_b, bo
     _missed_ctr = 0;
     _r_e = r_e;
     _l_e = l_e;
+
     qDebug () << "Exercise Window constructor: " << prev_font_size_L << prev_font_size_R << "right: " << _r_e << "Left: " << _l_e;
     setFontSizeR(smaller_R, prev_font_size_R);
     setFontSizeL(smaller_L, prev_font_size_L);
@@ -62,8 +63,8 @@ ExerciseWindow::ExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l_b, bo
     _animation = new QPropertyAnimation(_button, "pos");
     _animation->setDuration(0);
 
-    QScreen *screen = qApp->screens().at(0);
-    _width_of_central_vision_field_in_px = qDegreesToRadians(2.5)*distance*2*screen->physicalDotsPerInch()/25.4;
+    //QScreen *screen = qApp->screens().at(0);
+    //_width_of_central_vision_field_in_px = qDegreesToRadians(2.5)*distance*2*screen->physicalDotsPerInch()/25.4;
   //  qDebug() << "Width of central 5 degrees" << _width_of_central_vision_field_in_px;
 
     _timer = new QTimer;

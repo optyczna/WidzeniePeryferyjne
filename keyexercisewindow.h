@@ -19,7 +19,7 @@ class KeyExerciseWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit KeyExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l_b, bool r_b, double distance, bool r_e, bool l_e,
+    explicit KeyExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l_b, bool r_b, double central_vision_field_ex, bool r_e, bool l_e,
                                int prev_font_size_R, int prev_font_size_L,
                                int prev_peripheral_size_R, int prev_peripheral_size_L,
                                bool smaller_R, bool smaller_L, int ctr);
@@ -53,11 +53,20 @@ private:
     int _font_size_R;
     int _font_size_L;
     int _peripheral_font_size;
+    int _peripheral_font_size_R;
+    int _peripheral_font_size_L;
     int _clicks_ctr;
     int _missed_ctr;
     int _dot_ctr;
     bool _right_eye;
     bool _left_eye;
+    int _px_central_vis_field;
+    int x_pos;
+    int y_pos;
+    int per_x_l;
+    int per_y_u;
+    int per_x_r;
+    int per_y_b;
 
 signals:
     void clicks_r(int, int);

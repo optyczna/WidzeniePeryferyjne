@@ -18,8 +18,8 @@ class ExerciseWindow : public QDialog
 
 public:
     explicit ExerciseWindow(QWidget *parent = nullptr);
-    ExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l_b,bool r_b,
-                   double distance, bool r_e, bool l_e,
+    ExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l_b, bool r_b,
+                   double central_vision_field_px, bool r_e, bool l_e,
                    int prev_font_size_R, int prev_font_size_L,
                    int prev_peripheral_size_R, int prev_peripheral_size_L,
                    bool smaller_R, bool smaller_L);

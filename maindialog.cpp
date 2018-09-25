@@ -219,10 +219,11 @@ void MainDialog::checkInitialValues()
             _bad_good_ratio_l = bad_l/good_l;
             _prev_font_size_L = _personal_data->getFontSizeL();
             _prev_font_size_R = _personal_data->getFontSizeR();
-            qDebug() << "Main Dialog _prev R: " << _prev_font_size_R << "_prev_l" << _prev_font_size_L;
+
 
             _prev_peripheral_font_size_R = _personal_data->getPerFontSizeR();
             _prev_peripheral_font_size_L = _personal_data->getPerFontSizeL();
+            qDebug() << "Main Dialog _prev_peri R: " << _prev_peripheral_font_size_R << "_prev_l" << _prev_peripheral_font_size_L;
             if(_bad_good_ratio_r<0.5){
                 _smaller_R = true;
             }else{
@@ -252,13 +253,13 @@ void MainDialog::clicksL(int good, int bad)
 void MainDialog::fontSizeR(int font, int peripheral_font)
 {
     _personal_data->setFontValuesR(font, peripheral_font);
-    qDebug() << "Main Dialog font size R: " << font;
+    qDebug() << "Main Dialog peri font size R: " << peripheral_font;
 }
 
 void MainDialog::fontSizeL(int font, int peripheral_font)
 {
     _personal_data->setFontValuesL(font, peripheral_font);
-    qDebug() << "Main Dialog font size R: " << font;
+    qDebug() << "Main Dialog peri font size R: " << peripheral_font;
 }
 
 void MainDialog::keyClicksR(int good, int bad)
@@ -343,7 +344,7 @@ void MainDialog::excercise(double _screen_distance, double _angle, double _centr
                      _right_up_box->checkState(),
                      _left_bot_box->checkState(),
                      _right_bot_box->checkState(),
-                     _screen_distance,
+                     _central_vis_field_px,
                      _right_eye_check_box->checkState(),
                      _left_eye_check_box->checkState(),
                      _prev_font_size_R, _prev_font_size_L,
@@ -394,7 +395,7 @@ void MainDialog::excercise(double _screen_distance, double _angle, double _centr
                     nullptr,
                     _left_up_box->checkState(), _right_up_box->checkState(),
                     _left_bot_box->checkState(), _right_bot_box->checkState(),
-                    _screen_distance,
+                    _central_vis_field_px,
                     _right_eye_check_box->checkState(),
                     _left_eye_check_box->checkState(),
                     _prev_font_size_R, _prev_font_size_L,

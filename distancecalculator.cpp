@@ -52,8 +52,8 @@ void DistanceCalculator::animationStopped()
     double _angle = 2*qRadiansToDegrees(qAtan2(((QDesktopWidget().availableGeometry(this).width()-100)*0.25)/2, _screen_distance ));
 
     //width in px for central vision field(10 deg)
-    double _central_vis_field_px = qDegreesToRadians(5.0)*(_move_button->x()-_look_at_button->x())*19.5*2/4.76;
-    qDebug() << "Central 10 degrees in px" << _central_vis_field_px;
+    double _central_vis_field_px = qDegreesToRadians(10.0)*(_move_button->x()-_look_at_button->x())*19.5*2/4.76;
+    qDebug() << "Central 20 degrees in px" << _central_vis_field_px;
     emit computations(_screen_distance, _angle, _central_vis_field_px);
 }
 
