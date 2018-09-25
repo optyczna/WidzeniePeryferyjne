@@ -2,7 +2,8 @@
 #include "ui_keyexercisewindow.h"
 
 #include <QDebug>
-KeyExerciseWindow::KeyExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l_b, bool r_b, double central_vision_field_ex, bool r_e, bool l_e,
+KeyExerciseWindow::KeyExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l_b, bool r_b,
+                                     double central_vision_field_ex, bool r_e, bool l_e,
                                      int prev_font_size_R, int prev_font_size_L,
                                      int prev_peripheral_size_R, int prev_peripheral_size_L,
                                      bool smaller_R, bool smaller_L, int ctr) :
@@ -136,9 +137,6 @@ KeyExerciseWindow::KeyExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l
         _peripheral_font_size = _peripheral_font_size_L;
         qDebug() << "Key ex perif size" << _peripheral_font_size;
     }
-//    QFont _font("Arial", _font_size);
-//    _key_button->setFont(_font);
-//    _key_button->resize(_font_size+15,_font_size+15);
 
     _animation = new QPropertyAnimation(_key_button, "pos");
     _animation->setDuration(0);
@@ -156,6 +154,8 @@ KeyExerciseWindow::KeyExerciseWindow(QWidget *parent, bool l_u, bool r_u, bool l
 KeyExerciseWindow::~KeyExerciseWindow()
 {
     delete ui;
+    delete _timer;
+    delete _animation;
 }
 
 void KeyExerciseWindow::randomAnimation()
@@ -186,11 +186,6 @@ void KeyExerciseWindow::randomAnimation()
     int x = 1+(rand()%(QDesktopWidget().availableGeometry(this).width()-100));
     int y = 1+(rand()%(QDesktopWidget().availableGeometry(this).height()-100));
 
-//    int per_x_l = x_pos/2 - _px_central_vis_field;
-//    int per_y_u = y_pos/2 - _px_central_vis_field;
-//    int per_x_r = x_pos/2 + _px_central_vis_field;
-//    int per_y_b = y_pos/2 + _px_central_vis_field;
-
     if(x<per_x_l || x>per_x_r || y<per_y_u || y>per_y_b){
         QFont _font("Arial", _peripheral_font_size);
         _key_button->setFont(_font);
@@ -206,21 +201,7 @@ void KeyExerciseWindow::randomAnimation()
                 qDebug() << "Central font " << _font_size;
     }
 
-//    if(_font_size<20){
-//        x = 1+(rand()%(QDesktopWidget().availableGeometry(this).width()-100));
-//        y = 1+(rand()%(QDesktopWidget().availableGeometry(this).height()-100));
-//    }
-//    else if(_font_size>20 && _font_size<=40){
-//        x = 100+(rand()%(QDesktopWidget().availableGeometry(this).width()-200));
-//        y = 100+(rand()%(QDesktopWidget().availableGeometry(this).height()-200));
-//    }
-//    else if(_font_size>40){
-//        x = QDesktopWidget().availableGeometry(this).width()/4 + (rand()%(QDesktopWidget().availableGeometry(this).width()/2));
-//        y = QDesktopWidget().availableGeometry(this).height()/4 + (rand()%(QDesktopWidget().availableGeometry(this).height()/2));
-//    }
-
-
-    if((_clicks_ctr+_dot_ctr+_missed_ctr)==25){
+    if((_clicks_ctr+_dot_ctr+_missed_ctr)==30){
         messageBox();
     }
     _timer->start();
@@ -236,13 +217,12 @@ void KeyExerciseWindow::setFontSizeR(bool _smaller, int _prev_size)
     else{
         _font_size_R = _prev_size;
     }
-//    qDebug() << "Exercise Window font size R:" << _font_size_R << "prev size: " << _prev_size;
 }
 
 void KeyExerciseWindow::setPeripheralFontSizeR(bool _smaller, int _prev_size)
 {
     if(_smaller && (_prev_size>=40)){
-        _peripheral_font_size_R = _prev_size-10;
+        _peripheral_font_size_R = _prev_size-3;
     }
     if(!_smaller){
         _peripheral_font_size_R =_prev_size;
@@ -257,13 +237,12 @@ void KeyExerciseWindow::setFontSizeL(bool _smaller, int _prev_size)
     else{
         _font_size_L = _prev_size;
     }
-    //qDebug() << "Exercise Window font size R:" << _font_size_R << "prev size: " << _prev_size;
 }
 
 void KeyExerciseWindow::setPeripheralFontSizeL(bool _smaller, int _prev_size)
 {
     if(_smaller && (_prev_size>=40)){
-        _peripheral_font_size_L = _prev_size-10;
+        _peripheral_font_size_L = _prev_size-3;
     }
     if(!_smaller){
         _peripheral_font_size_L =_prev_size;
@@ -275,14 +254,9 @@ void KeyExerciseWindow::missedCounter()
 {
     ++_missed_ctr;
     if(_missed_ctr%10==0){
-        if(_font_size<=80){
-            _font_size+=10;
-            QFont _font("Arial", _font_size);
-            _key_button->setFont(_font);
-            _key_button->resize(_font_size+15, _font_size+15);
-        }
-        else{
-            messageBox();
+        if(_font_size<=80 ){
+            _font_size+=5;
+            _peripheral_font_size+=10;
         }
     }
 }
@@ -292,9 +266,9 @@ void KeyExerciseWindow::clickedCounter()
     ++_clicks_ctr;
     if(_clicks_ctr%15==0 && _font_size>=15){
         _font_size -=3;
-        QFont font("Arial", _font_size);
-        _key_button->setFont(font);
-        _key_button->resize(_font_size+15, _font_size+15);
+        if(_peripheral_font_size>=40){
+            _peripheral_font_size -=3;
+        }
     }
     else if (_font_size<=10){
         messageBox();
@@ -307,12 +281,7 @@ void KeyExerciseWindow::dotCounter()
     if(_dot_ctr%10==0){
         if(_font_size<=80){
             _font_size+=5;
-            QFont _font("Arial", _font_size);
-            _key_button->setFont(_font);
-            _key_button->resize(_font_size+15, _font_size+15);
-        }
-        else{
-            messageBox();
+            _peripheral_font_size+=10;
         }
     }
 }
@@ -326,7 +295,7 @@ void KeyExerciseWindow::messageBox()
         _timer->stop();
         _timer->destroyed();
         emit clicks_r(_clicks_ctr, _missed_ctr+_dot_ctr);
-        emit font_size_R(_font_size, _peripheral_font_size_R);
+        emit font_size_R(_font_size, _peripheral_font_size);
         QString text;
         text.append("For now we are done. Gerat job!\n\nGood clicks: ");
         text.append(QString::number(_clicks_ctr));
@@ -348,7 +317,7 @@ void KeyExerciseWindow::messageBox()
         _timer->stop();
         _timer->destroyed();
         emit clicks_l(_clicks_ctr, _missed_ctr+_dot_ctr);
-        emit font_size_L(_font_size, _peripheral_font_size_L);
+        emit font_size_L(_font_size, _peripheral_font_size);
         QString text;
         text.append("For now we are done. Gerat job!\n\nGood clicks: ");
         text.append(QString::number(_clicks_ctr));
@@ -368,7 +337,7 @@ void KeyExerciseWindow::messageBox()
         _animation->stop();
         _timer->stop();
         emit clicks_r(_clicks_ctr, _missed_ctr+_dot_ctr);
-        emit font_size_R(_font_size, _peripheral_font_size_R);
+        emit font_size_R(_font_size, _peripheral_font_size);
         QString text;
         text.append("Good clicks: ");
         text.append(QString::number(_clicks_ctr));
@@ -379,9 +348,7 @@ void KeyExerciseWindow::messageBox()
         text.append(" times.\n\nNow cover you right eye");
         _message_box->setText(text);
         _font_size = _font_size_L;
-        QFont font("Arial", _font_size);
-        _key_button->setFont(font);
-        _key_button->resize(_font_size+15, _font_size+15);
+        _peripheral_font_size = _peripheral_font_size_L;
         _clicks_ctr = 0;
         _dot_ctr = 0;
         _missed_ctr = 0;
@@ -399,7 +366,7 @@ void KeyExerciseWindow::messageBox()
         _timer->destroyed();
         _animation->destroyed();
         emit clicks_l(_clicks_ctr, _missed_ctr+_dot_ctr);
-        emit font_size_R(_font_size, _peripheral_font_size_R);
+        emit font_size_L(_font_size, _peripheral_font_size);
 
         QString text;
         text.append("For now we are done. Gerat job!\n\nGood clicks: ");

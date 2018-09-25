@@ -43,6 +43,13 @@ private:
     int _font_size_R;
     int _font_size_L;
     int _peripheral_font_size;
+    int _peripheral_font_size_R;
+    int _peripheral_font_size_L;
+    int _px_central_vis_field;
+    int per_x_l;
+    int per_y_u;
+    int per_x_r;
+    int per_y_b;
     bool _r_e;
     bool _l_e;    
     double _width_of_central_vision_field_in_px;
